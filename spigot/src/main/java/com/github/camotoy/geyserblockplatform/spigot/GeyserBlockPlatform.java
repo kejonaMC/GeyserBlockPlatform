@@ -90,6 +90,9 @@ public final class GeyserBlockPlatform extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         DeviceOS deviceOS = this.platformChecker.getBedrockPlatform(event.getPlayer().getUniqueId());
+        if (deviceOS == null) {
+            return;
+        }
         if (!supportedDeviceOSList.contains(deviceOS)) {
             event.getPlayer().kickPlayer("This server cannot be joined with your Bedrock platform!");
         }
