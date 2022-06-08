@@ -2,7 +2,6 @@ unknown-platform-enabled: true
 android-enabled: true
 ios-enabled: true
 macos-enabled: true
-fireos-enabled: true
 gearvr-enabled: true
 windows10-enabled: true
 windowsedu-enabled: true

@@ -56,15 +56,14 @@ public final class GeyserBlockPlatform extends JavaPlugin implements Listener {
         supportedDeviceOSList = new ArrayList<>();
 
         addValueIfTrue(supportedDeviceOSList, DeviceOs.UNKNOWN, config::isUnknownEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOs.valueOf("ANDROID"), config::isAndroidEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.GOOGLE, config::isAndroidEnabled);
         addValueIfTrue(supportedDeviceOSList, DeviceOs.IOS, config::isIosEnabled);
         addValueIfTrue(supportedDeviceOSList, DeviceOs.OSX, config::isMacOsEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOs.valueOf("FIREOS"), config::isFireOsEnabled);
         addValueIfTrue(supportedDeviceOSList, DeviceOs.GEARVR, config::isGearVrEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOs.valueOf("WIN10"), config::isWindows10Enabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.UWP, config::isWindows10Enabled);
         addValueIfTrue(supportedDeviceOSList, DeviceOs.WIN32, config::isWindowsEduEnabled);
         addValueIfTrue(supportedDeviceOSList, DeviceOs.PS4, config::isPs4Enabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOs.valueOf("SWITCH"), config::isSwitchEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.NX, config::isSwitchEnabled);
         addValueIfTrue(supportedDeviceOSList, DeviceOs.XBOX, config::isXboxOneEnabled);
         addValueIfTrue(supportedDeviceOSList, DeviceOs.WINDOWS_PHONE, config::isWindowsPhoneEnabled);
 

@@ -13,8 +13,6 @@ public class Config {
     private boolean iosEnabled = true;
     @JsonProperty("macos-enabled")
     private boolean macOsEnabled = true;
-    @JsonProperty("fireos-enabled")
-    private boolean fireOsEnabled = true;
     @JsonProperty("gearvr-enabled")
     private boolean gearVrEnabled = true;
     @JsonProperty("windows10-enabled")
@@ -44,10 +42,6 @@ public class Config {
 
     public boolean isMacOsEnabled() {
         return macOsEnabled;
-    }
-
-    public boolean isFireOsEnabled() {
-        return fireOsEnabled;
     }
 
     public boolean isGearVrEnabled() {
