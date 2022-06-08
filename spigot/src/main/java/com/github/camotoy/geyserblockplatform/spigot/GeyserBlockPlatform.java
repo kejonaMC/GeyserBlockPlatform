@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.geysermc.floodgate.util.DeviceOS;
+import org.geysermc.floodgate.util.DeviceOs;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 
 public final class GeyserBlockPlatform extends JavaPlugin implements Listener {
     private BedrockPlatformChecker platformChecker;
-    private List<DeviceOS> supportedDeviceOSList;
+    private List<DeviceOs> supportedDeviceOSList;
 
     @Override
     public void onEnable() {
@@ -55,18 +55,18 @@ public final class GeyserBlockPlatform extends JavaPlugin implements Listener {
 
         supportedDeviceOSList = new ArrayList<>();
 
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.UNKNOWN, config::isUnknownEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.ANDROID, config::isAndroidEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.IOS, config::isIosEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.OSX, config::isMacOsEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.FIREOS, config::isFireOsEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.GEARVR, config::isGearVrEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.WIN10, config::isWindows10Enabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.WIN32, config::isWindowsEduEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.ORBIS, config::isPs4Enabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.SWITCH, config::isSwitchEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.XBOX_ONE, config::isXboxOneEnabled);
-        addValueIfTrue(supportedDeviceOSList, DeviceOS.WIN_PHONE, config::isWindowsPhoneEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.UNKNOWN, config::isUnknownEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.valueOf("ANDROID"), config::isAndroidEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.IOS, config::isIosEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.OSX, config::isMacOsEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.valueOf("FIREOS"), config::isFireOsEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.GEARVR, config::isGearVrEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.valueOf("WIN10"), config::isWindows10Enabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.WIN32, config::isWindowsEduEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.PS4, config::isPs4Enabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.valueOf("SWITCH"), config::isSwitchEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.XBOX, config::isXboxOneEnabled);
+        addValueIfTrue(supportedDeviceOSList, DeviceOs.WINDOWS_PHONE, config::isWindowsPhoneEnabled);
 
         if (hasFloodgate) {
             this.platformChecker = new FloodgateSpigotBedrockPlatformChecker();
@@ -77,9 +77,9 @@ public final class GeyserBlockPlatform extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
-    private void addValueIfTrue(List<DeviceOS> list, DeviceOS deviceOS, Supplier<Boolean> function) {
+    private void addValueIfTrue(List<DeviceOs> list, DeviceOs deviceOs, Supplier<Boolean> function) {
         if (function.get()) {
-            list.add(deviceOS);
+            list.add(deviceOs);
         }
     }
 
@@ -89,11 +89,11 @@ public final class GeyserBlockPlatform extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        DeviceOS deviceOS = this.platformChecker.getBedrockPlatform(event.getPlayer().getUniqueId());
-        if (deviceOS == null) {
+        DeviceOs deviceOs = this.platformChecker.getBedrockPlatform(event.getPlayer().getUniqueId());
+        if (deviceOs == null) {
             return;
         }
-        if (!supportedDeviceOSList.contains(deviceOS)) {
+        if (!supportedDeviceOSList.contains(deviceOs)) {
             event.getPlayer().kickPlayer("This server cannot be joined with your Bedrock platform!");
         }
     }
