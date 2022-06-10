@@ -1,0 +1,3 @@
+name: GeyserBlockPlatform
+version: '${project.version}'
+main: com.github.camotoy.geyserblockplatform.bungeecord.GeyserBlockPlatformBungee

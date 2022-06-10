@@ -1,5 +1,6 @@
-package com.github.camotoy.geyserblockplatform.common;
+package com.github.camotoy.geyserblockplatform.common.platformchecker;
 
+import com.github.camotoy.geyserblockplatform.common.device.DeviceOsFixer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.geysermc.floodgate.util.DeviceOs;
 import org.geysermc.geyser.GeyserImpl;

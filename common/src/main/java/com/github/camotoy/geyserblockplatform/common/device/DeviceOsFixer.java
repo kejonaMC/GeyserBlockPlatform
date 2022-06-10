@@ -1,4 +1,4 @@
-package com.github.camotoy.geyserblockplatform.common;
+package com.github.camotoy.geyserblockplatform.common.device;
 
 
 import org.geysermc.floodgate.util.DeviceOs;

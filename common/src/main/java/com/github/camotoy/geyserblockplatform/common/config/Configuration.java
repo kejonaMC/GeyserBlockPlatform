@@ -1,10 +1,39 @@
-package com.github.camotoy.geyserblockplatform.spigot;
+package com.github.camotoy.geyserblockplatform.common.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Config {
+public class Configuration {
+    public static Configuration config(Path dataDirectory) throws IOException {
+
+        File folder = dataDirectory.toFile();
+        File file = new File(folder, "config.yml");
+
+        if (!file.exists()) {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            try (InputStream input = Configuration.class.getResourceAsStream("/" + file.getName())) {
+                if (input != null) {
+                    Files.copy(input, file.toPath());
+                } else {
+                    file.createNewFile();
+                }
+            } catch (IOException ignored) {}
+        }
+
+        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        return mapper.readValue(dataDirectory.resolve("config.yml").toFile(), Configuration.class);
+    }
     @JsonProperty("unknown-platform-enabled")
     private boolean unknownEnabled = true;
     @JsonProperty("android-enabled")
