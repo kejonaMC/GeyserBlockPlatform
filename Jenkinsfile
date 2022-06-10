@@ -15,7 +15,7 @@ pipeline {
             post {
                 success {
                     archiveArtifacts 'spigot/target/GeyserBlockPlatform-Spigot.jar'
-                    archiveArtifacts 'bungeecord/target/GeyserBlockPlatform-bungeecord.jar'
+                    archiveArtifacts 'bungeecord/target/GeyserBlockPlatform-Bungeecord.jar'
                 }
             }
         }
