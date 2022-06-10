@@ -3,6 +3,7 @@ package com.github.camotoy.geyserblockplatform.bungeecord;
 import com.github.camotoy.geyserblockplatform.common.config.Configuration;
 import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
+import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -36,7 +37,7 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
         }
 
         if (hasFloodgate) {
-            this.platformChecker = new FloodgateBungeeBedrockPlatformChecker();
+            this.platformChecker = new FloodgateBedrockPlatformChecker();
             getLogger().warning("Floodgate found! Hooking into Floodgate.");
         } else {
             this.platformChecker = new GeyserBedrockPlatformChecker();

@@ -1,6 +1,7 @@
 package com.github.camotoy.geyserblockplatform.spigot;
 
 import com.github.camotoy.geyserblockplatform.common.config.Configuration;
+import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
@@ -35,7 +36,7 @@ public final class GeyserBlockPlatformSpigot extends JavaPlugin implements Liste
         }
 
         if (hasFloodgate) {
-            this.platformChecker = new FloodgateSpigotBedrockPlatformChecker();
+            this.platformChecker = new FloodgateBedrockPlatformChecker();
             getLogger().warning("Floodgate found! Hooking into Floodgate.");
         } else {
             this.platformChecker = new GeyserBedrockPlatformChecker();
