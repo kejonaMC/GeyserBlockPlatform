@@ -11,6 +11,7 @@
         <module>common</module>
         <module>spigot</module>
         <module>bungeecord</module>
+        <module>velocity</module>
     </modules>
     <packaging>pom</packaging>
 
