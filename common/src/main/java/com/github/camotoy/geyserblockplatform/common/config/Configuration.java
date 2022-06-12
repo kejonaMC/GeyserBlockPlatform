@@ -57,6 +57,9 @@ public class Configuration {
     @JsonProperty("windowsphone-enabled")
     private boolean windowsPhoneEnabled = true;
 
+    @JsonProperty("no-access-message")
+    private String noAccessMessage;
+
     public boolean isUnknownEnabled() {
         return unknownEnabled;
     }
@@ -99,5 +102,9 @@ public class Configuration {
 
     public boolean isWindowsPhoneEnabled() {
         return windowsPhoneEnabled;
+    }
+
+    public String getNoAccessMessage() {
+        return noAccessMessage;
     }
 }

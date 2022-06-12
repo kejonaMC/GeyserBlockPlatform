@@ -5,6 +5,7 @@ import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSLis
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.PreLoginEvent;
@@ -60,7 +61,7 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
 
         if (!SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS)) {
             event.setCancelled(true);
-            event.setCancelReason(new TextComponent("This server cannot be joined with your Bedrock platform!"));
+            event.setCancelReason(new TextComponent(ChatColor.translateAlternateColorCodes( '&', config.getNoAccessMessage())));
         }
     }
 }

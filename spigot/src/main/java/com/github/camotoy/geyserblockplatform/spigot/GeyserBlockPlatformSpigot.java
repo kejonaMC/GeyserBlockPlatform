@@ -6,6 +6,7 @@ import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedro
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -57,7 +58,7 @@ public final class GeyserBlockPlatformSpigot extends JavaPlugin implements Liste
         }
 
         if (!SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS)) {
-            event.getPlayer().kickPlayer("This server cannot be joined with your Bedrock platform!");
+            event.getPlayer().kickPlayer(ChatColor.translateAlternateColorCodes('&', config.getNoAccessMessage()));
         }
     }
 }

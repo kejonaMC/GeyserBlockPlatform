@@ -13,7 +13,8 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.geysermc.floodgate.util.DeviceOs;
 import org.slf4j.Logger;
 
@@ -31,6 +32,7 @@ public class GeyserBlockPlatformVelocity {
     private BedrockPlatformChecker platformChecker;
     private Configuration config = null;
     private final Path dataDirectory;
+    private static LegacyComponentSerializer serializer = LegacyComponentSerializer.builder().character('&').hexCharacter('#').hexColors().build();
 
     @Inject
     public GeyserBlockPlatformVelocity(ProxyServer server, Logger logger, @DataDirectory final Path folder) {
@@ -76,7 +78,11 @@ public class GeyserBlockPlatformVelocity {
         }
 
         if (!SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS)) {
-            event.getPlayer().disconnect(Component.text("This server cannot be joined with your Bedrock platform!"));
+            event.getPlayer().disconnect(color(config.getNoAccessMessage()));
         }
+    }
+
+    public static TextComponent color(String s) {
+        return serializer.deserialize(s);
     }
 }
