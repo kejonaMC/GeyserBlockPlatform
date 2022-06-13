@@ -8,13 +8,14 @@ import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedro
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.event.PreLoginEvent;
+import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventHandler;
 import org.geysermc.floodgate.util.DeviceOs;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public final class GeyserBlockPlatformBungee extends Plugin implements Listener {
     private BedrockPlatformChecker platformChecker;
@@ -50,18 +51,32 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
     @Override
     public void onDisable() {
     }
+@EventHandler
+    public void onPlayerServerConnect(ServerConnectedEvent event) {
+        String servername = event.getServer().getInfo().getName();
+        // First check if the "deny-server-access:" list contains the server name.
+        if (config.getNoServerAccess().contains(servername)
+                // Then check if the list contains "all" in case they want full network deny
+                || config.getNoServerAccess().contains("all")
+                // then check if the client platform isn't blocked
+                && !connectionAllowed(event.getPlayer().getUniqueId())) {
+            // Disconnect player
+            event.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes( '&', config.getNoAccessMessage())));
+        }
+    }
 
-    @EventHandler
-    public void onPlayerJoin(PreLoginEvent event) {
+    /**
+     * Checks the supportedDeviceOSList to see if a connection from platform is allowed
+     *
+     * @param uuid  the players uuid
+     * @return checks if the players platform is blocked
+     */
+    public boolean connectionAllowed(UUID uuid) {
+        DeviceOs deviceOS = this.platformChecker.getBedrockPlatform(uuid);
 
-        DeviceOs deviceOS = this.platformChecker.getBedrockPlatform(event.getConnection().getUniqueId());
         if (deviceOS == null) {
-            return;
+            return false;
         }
-
-        if (!SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS)) {
-            event.setCancelled(true);
-            event.setCancelReason(new TextComponent(ChatColor.translateAlternateColorCodes( '&', config.getNoAccessMessage())));
-        }
+        return SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS);
     }
 }

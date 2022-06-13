@@ -8,6 +8,13 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class SupportedDeviceOSList {
+
+    /**
+     * Load the supportedDeviceOSList.
+     *
+     * @param config  configuration
+     * @return a list of blocked/unblocked platforms
+     */
     public static List<DeviceOs> supportedDeviceOSList(Configuration config) {
         List<DeviceOs> getSupportedDeviceOSList = new ArrayList<>();
         addValueIfTrue(getSupportedDeviceOSList, DeviceOs.UNKNOWN, config::isUnknownEnabled);

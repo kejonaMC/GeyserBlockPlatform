@@ -10,11 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Configuration {
     public static Configuration config(Path dataDirectory) throws IOException {
-
         File folder = dataDirectory.toFile();
         File file = new File(folder, "config.yml");
 
@@ -56,6 +56,9 @@ public class Configuration {
     private boolean xboxOneEnabled = true;
     @JsonProperty("windowsphone-enabled")
     private boolean windowsPhoneEnabled = true;
+
+    @JsonProperty("deny-server-access")
+    private List<String> noServerAccess;
 
     @JsonProperty("no-access-message")
     private String noAccessMessage;
@@ -106,5 +109,8 @@ public class Configuration {
 
     public String getNoAccessMessage() {
         return noAccessMessage;
+    }
+    public List<String> getNoServerAccess() {
+        return noServerAccess;
     }
 }

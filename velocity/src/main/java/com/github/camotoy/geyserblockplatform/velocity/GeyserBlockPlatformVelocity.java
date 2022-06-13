@@ -7,7 +7,7 @@ import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBe
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.PostOrder;
-import com.velocitypowered.api.event.connection.PostLoginEvent;
+import com.velocitypowered.api.event.player.ServerPreConnectEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.Plugin;
@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.UUID;
 
 @Plugin(
         id = "geyserblockplatformvelocity",
@@ -70,16 +71,32 @@ public class GeyserBlockPlatformVelocity {
     }
 
     @Subscribe(order = PostOrder.FIRST)
-    public void onPlayerJoin(PostLoginEvent event) {
-
-        DeviceOs deviceOS = this.platformChecker.getBedrockPlatform(event.getPlayer().getUniqueId());
-        if (deviceOS == null) {
-            return;
-        }
-
-        if (!SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS)) {
+    public void onPlayerChangeServer(ServerPreConnectEvent event) {
+        String servername = event.getOriginalServer().getServerInfo().getName();
+        // First check if the "deny-server-access:" list contains the server name.
+        if (config.getNoServerAccess().contains(servername)
+                // Then check if the list contains "all" in case they want full network deny
+                || config.getNoServerAccess().contains("all")
+                // then check if the client platform isn't blocked
+                && !connectionAllowed(event.getPlayer().getUniqueId())) {
+            // Disconnect player
             event.getPlayer().disconnect(color(config.getNoAccessMessage()));
         }
+    }
+
+    /**
+     * Checks the supportedDeviceOSList to see if a connection from platform is allowed
+     *
+     * @param uuid  the players uuid
+     * @return checks if the players platform is blocked
+     */
+    public boolean connectionAllowed(UUID uuid) {
+        DeviceOs deviceOS = this.platformChecker.getBedrockPlatform(uuid);
+
+        if (deviceOS == null) {
+            return false;
+        }
+        return SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS);
     }
 
     public static TextComponent color(String s) {
