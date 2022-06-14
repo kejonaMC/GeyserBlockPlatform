@@ -53,6 +53,10 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
     }
 @EventHandler
     public void onPlayerServerConnect(ServerConnectedEvent event) {
+        if (event.getPlayer().hasPermission("geyserblockplatform.bypas")) {
+            return;
+        }
+
         String servername = event.getServer().getInfo().getName();
         // First check if the "deny-server-access:" list contains the server name.
         if (config.getNoServerAccess().contains(servername)

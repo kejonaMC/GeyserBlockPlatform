@@ -76,6 +76,10 @@ public class GeyserBlockPlatformVelocity {
 
     @Subscribe(order = PostOrder.FIRST)
     public void onPlayerChangeServer(ServerPreConnectEvent event) {
+        if (event.getPlayer().hasPermission("geyserblockplatform.bypass")) {
+            return;
+        }
+
         String servername = event.getOriginalServer().getServerInfo().getName();
         // First check if the "deny-server-access:" list contains the server name.
         if (config.getNoServerAccess().contains(servername)

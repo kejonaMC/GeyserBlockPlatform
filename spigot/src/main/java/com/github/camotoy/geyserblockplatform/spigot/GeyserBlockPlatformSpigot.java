@@ -52,6 +52,10 @@ public final class GeyserBlockPlatformSpigot extends JavaPlugin implements Liste
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if (event.getPlayer().hasPermission("geyserblockplatform.bypass")) {
+            return;
+        }
+
         DeviceOs deviceOS = this.platformChecker.getBedrockPlatform(event.getPlayer().getUniqueId());
         if (deviceOS == null) {
             return;
