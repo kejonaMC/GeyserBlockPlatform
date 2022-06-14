@@ -11,6 +11,7 @@ public class DeviceOsFixer {
         if (deviceOS == DeviceOs.NX) {
             return DeviceOs.PS4;
         }
+
         return deviceOS;
     }
 }

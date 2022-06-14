@@ -50,10 +50,6 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
         ProxyServer.getInstance().getPluginManager().registerListener(this, this);
     }
 
-    @Override
-    public void onDisable() {
-    }
-
     @EventHandler
     public void onPlayerServerConnect(ServerConnectedEvent event) {
         if (event.getPlayer().hasPermission(Permissions.bypassPermission)) {
@@ -84,6 +80,7 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
         if (deviceOS == null) {
             return false;
         }
+
         return SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS);
     }
 }

@@ -23,6 +23,7 @@ public class Configuration {
                 file.getParentFile().mkdirs();
             }
             try (InputStream input = Configuration.class.getResourceAsStream("/" + file.getName())) {
+
                 if (input != null) {
                     Files.copy(input, file.toPath());
                 } else {
@@ -110,6 +111,7 @@ public class Configuration {
     public String getNoAccessMessage() {
         return noAccessMessage;
     }
+
     public List<String> getNoServerAccess() {
         return noServerAccess;
     }

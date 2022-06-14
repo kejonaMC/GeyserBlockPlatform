@@ -105,6 +105,7 @@ public class GeyserBlockPlatformVelocity {
         if (deviceOS == null) {
             return false;
         }
+
         return SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS);
     }
 
