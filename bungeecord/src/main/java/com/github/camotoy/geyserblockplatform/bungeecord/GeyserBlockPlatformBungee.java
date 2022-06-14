@@ -1,5 +1,6 @@
 package com.github.camotoy.geyserblockplatform.bungeecord;
 
+import com.github.camotoy.geyserblockplatform.common.Permissions;
 import com.github.camotoy.geyserblockplatform.common.config.Configuration;
 import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public final class GeyserBlockPlatformBungee extends Plugin implements Listener {
     private BedrockPlatformChecker platformChecker;
     private Configuration config = null;
+
     @Override
     public void onEnable() {
         boolean hasFloodgate = ProxyServer.getInstance().getPluginManager().getPlugin("floodgate") != null;
@@ -51,9 +53,10 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
     @Override
     public void onDisable() {
     }
-@EventHandler
+
+    @EventHandler
     public void onPlayerServerConnect(ServerConnectedEvent event) {
-        if (event.getPlayer().hasPermission("geyserblockplatform.bypas")) {
+        if (event.getPlayer().hasPermission(Permissions.bypassPermission)) {
             return;
         }
 

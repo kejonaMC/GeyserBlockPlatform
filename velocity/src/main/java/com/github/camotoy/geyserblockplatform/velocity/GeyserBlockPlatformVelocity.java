@@ -1,5 +1,6 @@
 package com.github.camotoy.geyserblockplatform.velocity;
 
+import com.github.camotoy.geyserblockplatform.common.Permissions;
 import com.github.camotoy.geyserblockplatform.common.config.Configuration;
 import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
@@ -76,7 +77,7 @@ public class GeyserBlockPlatformVelocity {
 
     @Subscribe(order = PostOrder.FIRST)
     public void onPlayerChangeServer(ServerPreConnectEvent event) {
-        if (event.getPlayer().hasPermission("geyserblockplatform.bypass")) {
+        if (event.getPlayer().hasPermission(Permissions.bypassPermission)) {
             return;
         }
 

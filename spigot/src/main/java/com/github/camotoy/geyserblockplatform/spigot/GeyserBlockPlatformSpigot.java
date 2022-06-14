@@ -1,5 +1,6 @@
 package com.github.camotoy.geyserblockplatform.spigot;
 
+import com.github.camotoy.geyserblockplatform.common.Permissions;
 import com.github.camotoy.geyserblockplatform.common.config.Configuration;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
@@ -18,11 +19,12 @@ import java.io.IOException;
 public final class GeyserBlockPlatformSpigot extends JavaPlugin implements Listener {
     private BedrockPlatformChecker platformChecker;
     private Configuration config = null;
+
     @Override
     public void onEnable() {
-
         boolean hasFloodgate = Bukkit.getPluginManager().getPlugin("floodgate") != null;
         boolean hasGeyser = Bukkit.getPluginManager().getPlugin("Geyser-Spigot") != null;
+
         if (!hasFloodgate && !hasGeyser) {
             getLogger().warning("There is no Geyser or Floodgate plugin detected! Disabling...");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -52,7 +54,7 @@ public final class GeyserBlockPlatformSpigot extends JavaPlugin implements Liste
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().hasPermission("geyserblockplatform.bypass")) {
+        if (event.getPlayer().hasPermission(Permissions.bypassPermission)) {
             return;
         }
 
