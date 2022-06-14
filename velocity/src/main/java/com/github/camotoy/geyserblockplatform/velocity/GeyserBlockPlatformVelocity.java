@@ -45,11 +45,11 @@ public class GeyserBlockPlatformVelocity {
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         boolean hasFloodgate = server.getPluginManager().isLoaded("floodgate");
-        boolean hasGeyser = server.getPluginManager().isLoaded("Geyser-Bungeecord");
+        boolean hasGeyser = server.getPluginManager().isLoaded("Geyser-Velocity");
 
         if (!hasFloodgate && !hasGeyser) {
             logger.warn("There is no Geyser or Floodgate plugin detected! Disabling...");
-            // shutdown logic
+            onDisable();
             return;
         }
 
@@ -57,7 +57,7 @@ public class GeyserBlockPlatformVelocity {
             config = Configuration.config(dataDirectory);
         } catch (IOException e) {
             logger.error("Could not load config.yml! " + e.getMessage());
-            // shutdown logic here
+            onDisable();
         }
 
         if (hasFloodgate) {
@@ -68,6 +68,10 @@ public class GeyserBlockPlatformVelocity {
         }
 
         server.getEventManager().register(this, this);
+    }
+    @Subscribe
+    public void onDisable() {
+
     }
 
     @Subscribe(order = PostOrder.FIRST)
