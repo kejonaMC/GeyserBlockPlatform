@@ -1,7 +1,7 @@
 package com.github.camotoy.geyserblockplatform.velocity;
 
 import com.github.camotoy.geyserblockplatform.common.Permissions;
-import com.github.camotoy.geyserblockplatform.common.config.Configuration;
+import com.github.camotoy.geyserblockplatform.common.config.Configurate;
 import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
@@ -32,7 +32,7 @@ public class GeyserBlockPlatformVelocity {
     private final ProxyServer server;
     private final Logger logger;
     private BedrockPlatformChecker platformChecker;
-    private Configuration config = null;
+    private Configurate config = null;
     private final Path dataDirectory;
     private static LegacyComponentSerializer serializer = LegacyComponentSerializer.builder().character('&').hexCharacter('#').hexColors().build();
 
@@ -45,6 +45,7 @@ public class GeyserBlockPlatformVelocity {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
+        config = Configurate.create(dataDirectory);
         boolean hasFloodgate = server.getPluginManager().isLoaded("floodgate");
         boolean hasGeyser = server.getPluginManager().isLoaded("Geyser-Velocity");
 
@@ -52,13 +53,6 @@ public class GeyserBlockPlatformVelocity {
             logger.warn("There is no Geyser or Floodgate plugin detected! Disabling...");
             onDisable();
             return;
-        }
-
-        try {
-            config = Configuration.config(dataDirectory);
-        } catch (IOException e) {
-            logger.error("Could not load config.yml! " + e.getMessage());
-            onDisable();
         }
 
         if (hasFloodgate) {
