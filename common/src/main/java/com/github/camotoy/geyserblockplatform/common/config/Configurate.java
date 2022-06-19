@@ -13,8 +13,13 @@ import java.nio.file.Path;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Configuration {
-    public static Configuration config(Path dataDirectory) throws IOException {
+public class Configurate {
+    /**
+     * Load config
+     *
+     * @param dataDirectory The config's directory
+     */
+    public static Configurate create(Path dataDirectory) {
         File folder = dataDirectory.toFile();
         File file = new File(folder, "config.yml");
 
@@ -22,19 +27,24 @@ public class Configuration {
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
-            try (InputStream input = Configuration.class.getResourceAsStream("/" + file.getName())) {
-
+            try (InputStream input = Configurate.class.getResourceAsStream("/" + file.getName())) {
                 if (input != null) {
                     Files.copy(input, file.toPath());
                 } else {
                     file.createNewFile();
                 }
-            } catch (IOException ignored) {}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        return mapper.readValue(dataDirectory.resolve("config.yml").toFile(), Configuration.class);
+        try {
+            final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            return mapper.readValue(dataDirectory.resolve("config.yml").toFile(), Configurate.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot create GeyserBlockJavaPlayers config!", e);
+        }
     }
+
     @JsonProperty("unknown-platform-enabled")
     private boolean unknownEnabled = true;
     @JsonProperty("android-enabled")

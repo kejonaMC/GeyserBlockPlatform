@@ -1,6 +1,6 @@
 package com.github.camotoy.geyserblockplatform.common.device;
 
-import com.github.camotoy.geyserblockplatform.common.config.Configuration;
+import com.github.camotoy.geyserblockplatform.common.config.Configurate;
 import org.geysermc.floodgate.util.DeviceOs;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class SupportedDeviceOSList {
      * @param config  configuration
      * @return a list of blocked/unblocked platforms
      */
-    public static List<DeviceOs> supportedDeviceOSList(Configuration config) {
+    public static List<DeviceOs> supportedDeviceOSList(Configurate config) {
         List<DeviceOs> getSupportedDeviceOSList = new ArrayList<>();
         addValueIfTrue(getSupportedDeviceOSList, DeviceOs.UNKNOWN, config::isUnknownEnabled);
         addValueIfTrue(getSupportedDeviceOSList, DeviceOs.GOOGLE, config::isAndroidEnabled);

@@ -1,7 +1,7 @@
 package com.github.camotoy.geyserblockplatform.bungeecord;
 
 import com.github.camotoy.geyserblockplatform.common.Permissions;
-import com.github.camotoy.geyserblockplatform.common.config.Configuration;
+import com.github.camotoy.geyserblockplatform.common.config.Configurate;
 import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
@@ -15,15 +15,15 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventHandler;
 import org.geysermc.floodgate.util.DeviceOs;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public final class GeyserBlockPlatformBungee extends Plugin implements Listener {
     private BedrockPlatformChecker platformChecker;
-    private Configuration config = null;
+    private Configurate config = null;
 
     @Override
     public void onEnable() {
+        config = Configurate.create(this.getDataFolder().toPath());
         boolean hasFloodgate = ProxyServer.getInstance().getPluginManager().getPlugin("floodgate") != null;
         boolean hasGeyser = ProxyServer.getInstance().getPluginManager().getPlugin("Geyser-Bungeecord") != null;
 
@@ -31,13 +31,6 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
             getLogger().warning("There is no Geyser or Floodgate plugin detected! Disabling...");
             this.onDisable();
             return;
-        }
-
-        try {
-            config = Configuration.config(this.getDataFolder().toPath());
-        } catch (IOException e) {
-            getLogger().severe("Could not load config.yml! " + e.getMessage());
-            this.onDisable();
         }
 
         if (hasFloodgate) {
