@@ -41,7 +41,7 @@ public class Configurate {
             final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             return mapper.readValue(dataDirectory.resolve("config.yml").toFile(), Configurate.class);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot create GeyserBlockJavaPlayers config!", e);
+            throw new RuntimeException("Cannot create GeyserBlockPlatform config!", e);
         }
     }
 
