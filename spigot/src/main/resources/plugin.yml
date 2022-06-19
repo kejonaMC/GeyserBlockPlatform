@@ -1,6 +1,10 @@
 name: GeyserBlockPlatform
 version: ${project.version}
-main: com.github.camotoy.geyserblockplatform.spigot.GeyserBlockPlatform
+main: com.github.camotoy.geyserblockplatform.spigot.GeyserBlockPlatformSpigot
 api-version: 1.13
 description: Prevent specific Bedrock platforms from joining your server.
-softdepend: [floodgate-bukkit, Geyser-Spigot]
+softdepend: [floodgate, Geyser-Spigot]
+permissions:
+  geyserblockplatform.bypass:
+    description: Give player a bypass for platform checker
+    default: op
