@@ -19,7 +19,6 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.geysermc.floodgate.util.DeviceOs;
 import org.slf4j.Logger;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.UUID;
 
