@@ -4,6 +4,7 @@ import com.github.camotoy.geyserblockplatform.common.Permissions;
 import com.github.camotoy.geyserblockplatform.common.config.Configurate;
 import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
+import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlayerChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
 import net.md_5.bungee.api.ChatColor;
@@ -49,15 +50,19 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
             return;
         }
 
-        String servername = event.getServer().getInfo().getName();
-        // First check if the "deny-server-access:" list contains the server name.
-        if (config.getNoServerAccess().contains(servername)
-                // Then check if the list contains "all" in case they want full network deny
-                || config.getNoServerAccess().contains("all")
-                // then check if the client platform isn't blocked
-                && !connectionAllowed(event.getPlayer().getUniqueId())) {
-            // Disconnect player
-            event.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes( '&', config.getNoAccessMessage())));
+        // Check if player is a bedrock player
+        if (BedrockPlayerChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
+            String servername = event.getServer().getInfo().getName();
+            // First check if the "deny-server-access:" list contains the server name.
+            if (config.getNoServerAccess().contains(servername)
+                    // Then check if the list contains "all" in case they want full network deny
+                    || config.getNoServerAccess().contains("all")) {
+                // Check if the client platform isn't blocked
+                if (!connectionAllowed(event.getPlayer().getUniqueId())) {
+                    // Disconnect player
+                    event.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', config.getNoAccessMessage())));
+                }
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.github.camotoy.geyserblockplatform.spigot;
 
 import com.github.camotoy.geyserblockplatform.common.Permissions;
 import com.github.camotoy.geyserblockplatform.common.config.Configurate;
+import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlayerChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
@@ -49,14 +50,17 @@ public final class GeyserBlockPlatformSpigot extends JavaPlugin implements Liste
         if (event.getPlayer().hasPermission(Permissions.bypassPermission)) {
             return;
         }
+        // Check if player is a bedrock player
+        if (BedrockPlayerChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
+            DeviceOs deviceOS = this.platformChecker.getBedrockPlatform(event.getPlayer().getUniqueId());
 
-        DeviceOs deviceOS = this.platformChecker.getBedrockPlatform(event.getPlayer().getUniqueId());
-        if (deviceOS == null) {
-            return;
-        }
+            if (deviceOS == null) {
+                return;
+            }
 
-        if (!SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS)) {
-            event.getPlayer().kickPlayer(ChatColor.translateAlternateColorCodes('&', config.getNoAccessMessage()));
+            if (!SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS)) {
+                event.getPlayer().kickPlayer(ChatColor.translateAlternateColorCodes('&', config.getNoAccessMessage()));
+            }
         }
     }
 }

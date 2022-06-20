@@ -6,9 +6,10 @@ import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSLis
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
+import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlayerChecker;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.PostOrder;
-import com.velocitypowered.api.event.player.ServerPreConnectEvent;
+import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.Plugin;
@@ -23,7 +24,7 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 @Plugin(
-        id = "geyserblockplatformvelocity",
+        id = "geyserblockplatform",
         name = "GeyserBlockPlatformVelocity",
         version = "1.1-SNAPSHOT"
 )
@@ -50,7 +51,6 @@ public class GeyserBlockPlatformVelocity {
 
         if (!hasFloodgate && !hasGeyser) {
             logger.warn("There is no Geyser or Floodgate plugin detected! Disabling...");
-            onDisable();
             return;
         }
 
@@ -61,28 +61,26 @@ public class GeyserBlockPlatformVelocity {
             this.platformChecker = new GeyserBedrockPlatformChecker();
         }
 
-        server.getEventManager().register(this, this);
-    }
-    @Subscribe
-    public void onDisable() {
-
     }
 
     @Subscribe(order = PostOrder.FIRST)
-    public void onPlayerChangeServer(ServerPreConnectEvent event) {
+    public void onPlayerChangeServer(ServerConnectedEvent event) {
         if (event.getPlayer().hasPermission(Permissions.bypassPermission)) {
             return;
         }
-
-        String servername = event.getOriginalServer().getServerInfo().getName();
-        // First check if the "deny-server-access:" list contains the server name.
-        if (config.getNoServerAccess().contains(servername)
-                // Then check if the list contains "all" in case they want full network deny
-                || config.getNoServerAccess().contains("all")
-                // then check if the client platform isn't blocked
-                && !connectionAllowed(event.getPlayer().getUniqueId())) {
-            // Disconnect player
-            event.getPlayer().disconnect(color(config.getNoAccessMessage()));
+        // Check if player is a bedrock player
+        if (BedrockPlayerChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
+            String servername = event.getServer().getServerInfo().getName();
+            // First check if the "deny-server-access:" list contains the server name.
+            if (config.getNoServerAccess().contains(servername)
+                    // Then check if the list contains "all" in case they want full network deny
+                    || config.getNoServerAccess().contains("all")) {
+                // Check if the client platform isn't blocked
+                if (!connectionAllowed(event.getPlayer().getUniqueId())) {
+                    // Disconnect player
+                    event.getPlayer().disconnect(color(config.getNoAccessMessage()));
+                }
+            }
         }
     }
 
