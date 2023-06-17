@@ -1,5 +1,5 @@
 package com.github.camotoy.geyserblockplatform.common;
 
-public class Permissions {
-    public static final String bypassPermission = "geyserblockplatform.bypass";
+public final class Permissions {
+    public static final String BYPASS = "geyserblockplatform.bypass";
 }

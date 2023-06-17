@@ -3,20 +3,20 @@ pipeline {
 
     tools {
         jdk 'Jdk17'
-        maven 'maven'
+        maven 'gradle'
     }
 
     stages {
         stage('Build') {
             steps {
                 echo 'Building..'
-                sh 'mvn clean package'
+                sh './gradlew clean build'
             }
             post {
                 success {
-                    archiveArtifacts 'spigot/target/GeyserBlockPlatform-Spigot.jar'
-                    archiveArtifacts 'bungeecord/target/GeyserBlockPlatform-Bungeecord.jar'
-                    archiveArtifacts 'velocity/target/GeyserBlockPlatform-Velocity.jar'
+                    archiveArtifacts 'spigot/build/libs/GeyserBlockPlatform-Spigot.jar'
+                    archiveArtifacts 'bungeecord/build/libs/GeyserBlockPlatform-Bungeecord.jar'
+                    archiveArtifacts 'velocity/build/libs/GeyserBlockPlatform-Velocity.jar'
                 }
             }
         }
@@ -59,7 +59,7 @@ pipeline {
                 env.changes = message
             }
 
-            discordSend description: "**Build:** [${currentBuild.id}](${env.BUILD_URL})\n**Status:** [${currentBuild.currentResult}](${env.BUILD_URL})\n${changes}\n\n[**Artifacts on Jenkins**](https://ci.projectg.dev/job/GeyserBlockPlatform/)", footer: 'ProjectG', link: env.BUILD_URL, successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), result: currentBuild.currentResult, title: "${env.JOB_NAME}", webhookURL: "${env.DISCORD_WEBHOOK}"
+            discordSend description: "**Build:** [${currentBuild.id}](${env.BUILD_URL})\n**Status:** [${currentBuild.currentResult}](${env.BUILD_URL})\n${changes}\n\n[**Artifacts on Jenkins**](https://ci.kejonamc.dev/job/GeyserBlockPlatform/)", footer: 'kejonaMC', link: env.BUILD_URL, successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), result: currentBuild.currentResult, title: "${env.JOB_NAME}", webhookURL: "${env.DISCORD_WEBHOOK}"
         }
     }
 }
