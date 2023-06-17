@@ -10,7 +10,7 @@ java {
 }
 
 dependencies {
-    api(projects.common)
+    api(projects.proxy)
 
     annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
     compileOnly("com.velocitypowered:velocity-api:3.1.1")

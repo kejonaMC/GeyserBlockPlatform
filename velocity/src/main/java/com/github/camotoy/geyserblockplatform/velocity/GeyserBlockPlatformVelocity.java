@@ -2,8 +2,6 @@ package com.github.camotoy.geyserblockplatform.velocity;
 
 import com.github.camotoy.geyserblockplatform.common.Permissions;
 import com.github.camotoy.geyserblockplatform.common.config.Config;
-import com.github.camotoy.geyserblockplatform.common.handler.BedrockHandler;
-import com.github.camotoy.geyserblockplatform.common.handler.FloodgateHandler;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.player.ServerPreConnectEvent;
@@ -14,7 +12,7 @@ import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
-import net.kyori.adventure.text.Component;
+import dev.kejona.geyserblockplatform.proxy.ProxyConfig;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.slf4j.Logger;
 
@@ -29,9 +27,7 @@ public class GeyserBlockPlatformVelocity {
     private final Path dataDirectory;
     private final Logger logger;
 
-    private BedrockHandler bedrockHandler;
     private Config config;
-    private Component disconnectMessage;
 
     @Inject
     public GeyserBlockPlatformVelocity(Logger logger, @DataDirectory Path folder) {
@@ -41,9 +37,7 @@ public class GeyserBlockPlatformVelocity {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) throws IOException {
-        bedrockHandler = new FloodgateHandler();
-        config = Config.create(dataDirectory);
-        disconnectMessage = LEGACY_SERIALIZER.deserialize(config.getNoAccessMessage());
+        config = Config.create(dataDirectory, ProxyConfig.class);
     }
 
     @Subscribe(order = PostOrder.LATE)
@@ -64,23 +58,24 @@ public class GeyserBlockPlatformVelocity {
             logger.warn("Assuming this server requires platform checking.");
         }
 
-        if (config.isDeniedServer(server)) {
 
-            Player player = event.getPlayer();
-            if (player.hasPermission(Permissions.BYPASS)) {
-                return;
-            }
+        Player player = event.getPlayer();
+        if (player.hasPermission(Permissions.BYPASS)) {
+            return;
+        }
 
-            if (config.isDeniedPlayer(player.getUniqueId(), bedrockHandler)) {
-                if (config.allServersDenied()) {
-                    // disconnect from velocity
-                    event.getPlayer().disconnect(disconnectMessage);
-                } else {
-                    // prevent joining the specific
-                    // todo: send player message?
-                    event.setResult(ServerPreConnectEvent.ServerResult.denied());
-                }
+        /*
+        if (config.shouldBlock(player.getUniqueId())) {
+            if (config.allServersDenied()) {
+                // disconnect from velocity
+                event.getPlayer().disconnect(disconnectMessage);
+            } else {
+                // prevent joining the specific
+                // todo: send player message?
+                event.setResult(ServerPreConnectEvent.ServerResult.denied());
             }
         }
+
+         */
     }
 }

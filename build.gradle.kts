@@ -32,7 +32,7 @@ subprojects {
 
         compileOnly("org.jetbrains:annotations:24.0.1")
 
-        compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT")
+        compileOnly("org.geysermc.api:base-api:1.0.0-SNAPSHOT")
     }
 
     repositories {

@@ -1,0 +1,4 @@
+
+dependencies {
+    api(projects.common)
+}
