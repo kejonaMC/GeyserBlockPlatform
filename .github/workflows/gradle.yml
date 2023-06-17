@@ -25,7 +25,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: success()
         with:
-          name: CrossplatForms
+          name: GeyserBlockPlatform
           path: |
             spigot/build/libs/GeyserBlockPlatform-Spigot.jar
             bungeecord/build/libs/GeyserBlockPlatform-Bungeecord.jar
