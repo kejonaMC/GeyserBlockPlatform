@@ -7,7 +7,13 @@ import org.geysermc.floodgate.util.DeviceOs;
 
 import java.util.UUID;
 
-public class FloodgateBedrockPlatformChecker implements BedrockPlatformChecker{
+public class FloodgateBedrockPlatformChecker implements BedrockPlatformChecker {
+
+    @Override
+    public boolean isBedrockPlayer(UUID uuid) {
+        return FloodgateApi.getInstance().isFloodgatePlayer(uuid);
+    }
+
     @Override
     public DeviceOs getBedrockPlatform(UUID uuid) {
         FloodgatePlayer player = FloodgateApi.getInstance().getPlayer(uuid);

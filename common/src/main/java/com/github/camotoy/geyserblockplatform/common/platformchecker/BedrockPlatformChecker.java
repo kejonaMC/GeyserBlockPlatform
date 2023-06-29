@@ -5,5 +5,6 @@ import org.geysermc.floodgate.util.DeviceOs;
 import java.util.UUID;
 
 public interface BedrockPlatformChecker {
+    boolean isBedrockPlayer(UUID uuid);
     DeviceOs getBedrockPlatform(UUID uuid);
 }

@@ -6,7 +6,6 @@ import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSLis
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
-import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlayerChecker;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
@@ -56,7 +55,6 @@ public class GeyserBlockPlatformVelocity {
 
         if (hasFloodgate) {
             this.platformChecker = new FloodgateBedrockPlatformChecker();
-            logger.warn("Floodgate found! Hooking into Floodgate.");
         } else {
             this.platformChecker = new GeyserBedrockPlatformChecker();
         }
@@ -69,7 +67,7 @@ public class GeyserBlockPlatformVelocity {
             return;
         }
         // Check if player is a bedrock player
-        if (BedrockPlayerChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
+        if (platformChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
             String servername = event.getServer().getServerInfo().getName();
             // First check if the "deny-server-access:" list contains the server name.
             if (config.getNoServerAccess().contains(servername)

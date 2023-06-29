@@ -4,7 +4,6 @@ import com.github.camotoy.geyserblockplatform.common.Permissions;
 import com.github.camotoy.geyserblockplatform.common.config.Configurate;
 import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
-import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlayerChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
 import net.md_5.bungee.api.ChatColor;
@@ -36,7 +35,6 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
 
         if (hasFloodgate) {
             this.platformChecker = new FloodgateBedrockPlatformChecker();
-            getLogger().warning("Floodgate found! Hooking into Floodgate.");
         } else {
             this.platformChecker = new GeyserBedrockPlatformChecker();
         }
@@ -51,7 +49,7 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
         }
 
         // Check if player is a bedrock player
-        if (BedrockPlayerChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
+        if (platformChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
             String servername = event.getServer().getInfo().getName();
             // First check if the "deny-server-access:" list contains the server name.
             if (config.getNoServerAccess().contains(servername)
