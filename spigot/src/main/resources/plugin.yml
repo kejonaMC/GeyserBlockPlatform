@@ -1,6 +1,7 @@
 name: GeyserBlockPlatform
-description: ${description}
-version: ${version}
+description: "${description}"
+version: "${version}"
+authors: [Camotoy, Konicai, Jens]
 
 main: dev.kejona.geyserblockplatform.spigot.GeyserBlockPlatformSpigot
 api-version: 1.13

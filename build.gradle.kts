@@ -41,7 +41,7 @@ subprojects {
     }
 
     tasks.processResources {
-        filesMatching(listOf("bungee.yml", "spigot.yml")) {
+        filesMatching(listOf("bungee.yml", "spigot.yml", "extension.yml")) {
             expand(
                 "description" to project.description,
                 "version" to project.version,

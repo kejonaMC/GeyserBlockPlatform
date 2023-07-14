@@ -1,6 +1,7 @@
 name: GeyserBlockPlatform
 description: "${description}"
 version: "${version}"
+author: kejonaMC
 
 main: dev.kejona.geyserblockplatform.bungeecord.GeyserBlockPlatformBungee
 softDepends: [floodgate, Geyser-Bungeecord]
