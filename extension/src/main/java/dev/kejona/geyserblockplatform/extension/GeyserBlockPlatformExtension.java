@@ -11,8 +11,6 @@ import org.geysermc.geyser.api.event.bedrock.SessionLoginEvent;
 import org.geysermc.geyser.api.event.lifecycle.GeyserPostInitializeEvent;
 import org.geysermc.geyser.api.extension.Extension;
 
-import java.io.IOException;
-
 public class GeyserBlockPlatformExtension implements Extension {
 
     private BedrockHandler handler;
@@ -26,7 +24,7 @@ public class GeyserBlockPlatformExtension implements Extension {
 
         try {
             this.config = ConfigLoader.loadConfig(this.dataFolder());
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger().severe("Failed to load config");
             e.printStackTrace();
             disable();
