@@ -2,7 +2,7 @@ name: GeyserBlockPlatform
 description: ${description}
 version: ${version}
 
-main: com.github.camotoy.geyserblockplatform.spigot.GeyserBlockPlatformSpigot
+main: dev.kejona.geyserblockplatform.spigot.GeyserBlockPlatformSpigot
 api-version: 1.13
 softdepend: [floodgate, Geyser-Spigot]
 

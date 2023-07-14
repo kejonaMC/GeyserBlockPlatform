@@ -6,7 +6,7 @@ plugins {
 }
 
 allprojects {
-    group = "com.github.camotoy.geyserblockplatform"
+    group = "dev.kejona.geyserblockplatform"
     version = "1.1-SNAPSHOT"
     description = "Prevent specific Bedrock platforms from joining your server"
 

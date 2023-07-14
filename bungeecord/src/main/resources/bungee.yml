@@ -2,7 +2,7 @@ name: GeyserBlockPlatform
 description: "${description}"
 version: "${version}"
 
-main: com.github.camotoy.geyserblockplatform.bungeecord.GeyserBlockPlatformBungee
+main: dev.kejona.geyserblockplatform.bungeecord.GeyserBlockPlatformBungee
 softDepends: [floodgate, Geyser-Bungeecord]
 
 permissions:
