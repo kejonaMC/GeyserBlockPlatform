@@ -1,6 +1,11 @@
 name: GeyserBlockPlatform
-version: '${project.version}'
-main: com.github.camotoy.geyserblockplatform.bungeecord.GeyserBlockPlatformBungee
+description: "${description}"
+version: "${version}"
+author: kejonaMC
+
+main: dev.kejona.geyserblockplatform.bungeecord.GeyserBlockPlatformBungee
+softDepends: [floodgate, Geyser-Bungeecord]
+
 permissions:
   geyserblockplatform.bypass:
     description: Give player a bypass for platform checker
