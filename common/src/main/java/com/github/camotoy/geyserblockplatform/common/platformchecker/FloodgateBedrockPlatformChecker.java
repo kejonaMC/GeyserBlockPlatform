@@ -1,25 +1,27 @@
 package com.github.camotoy.geyserblockplatform.common.platformchecker;
 
-import com.github.camotoy.geyserblockplatform.common.device.DeviceOsFixer;
+import com.github.camotoy.geyserblockplatform.common.Profile;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
-import org.geysermc.floodgate.util.DeviceOs;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class FloodgateBedrockPlatformChecker implements BedrockPlatformChecker {
+    private final FloodgateApi api = Objects.requireNonNull(FloodgateApi.getInstance(), "floodgate api");
 
     @Override
     public boolean isBedrockPlayer(UUID uuid) {
-        return FloodgateApi.getInstance().isFloodgatePlayer(uuid);
+        return api.isFloodgatePlayer(uuid);
     }
 
     @Override
-    public DeviceOs getBedrockPlatform(UUID uuid) {
-        FloodgatePlayer player = FloodgateApi.getInstance().getPlayer(uuid);
-        if (player != null) {
-            return DeviceOsFixer.getProperDeviceOs(player.getDeviceOs());
-        }
-        return null;
+    public Profile profile(UUID uuid) {
+        FloodgatePlayer player = Objects.requireNonNull(api.getPlayer(uuid), "floodgate player for " + uuid);
+        return new Profile(
+            player.getDeviceOs(),
+            player.getInputMode(),
+            player.getUiProfile()
+        );
     }
 }

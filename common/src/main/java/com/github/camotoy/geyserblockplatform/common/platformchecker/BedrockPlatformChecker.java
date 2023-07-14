@@ -1,10 +1,10 @@
 package com.github.camotoy.geyserblockplatform.common.platformchecker;
 
-import org.geysermc.floodgate.util.DeviceOs;
+import com.github.camotoy.geyserblockplatform.common.Profile;
 
 import java.util.UUID;
 
 public interface BedrockPlatformChecker {
     boolean isBedrockPlayer(UUID uuid);
-    DeviceOs getBedrockPlatform(UUID uuid);
+    Profile profile(UUID uuid);
 }

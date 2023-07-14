@@ -1,64 +1,67 @@
 package com.github.camotoy.geyserblockplatform.spigot;
 
+import com.github.camotoy.geyserblockplatform.common.BlockResult;
 import com.github.camotoy.geyserblockplatform.common.Permissions;
-import com.github.camotoy.geyserblockplatform.common.config.Configurate;
-import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
 import com.github.camotoy.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
-import com.github.camotoy.geyserblockplatform.common.device.SupportedDeviceOSList;
+import com.github.camotoy.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
+import com.github.camotoy.geyserblockplatform.common.config.Config;
+import com.github.camotoy.geyserblockplatform.common.config.ConfigLoader;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.geysermc.floodgate.util.DeviceOs;
+
+import java.io.IOException;
 
 public final class GeyserBlockPlatformSpigot extends JavaPlugin implements Listener {
-    private BedrockPlatformChecker platformChecker;
-    private Configurate config = null;
+    private BedrockPlatformChecker handler;
+    private Config config;
 
     @Override
     public void onEnable() {
-        config = Configurate.create(this.getDataFolder().toPath());
-        boolean hasFloodgate = Bukkit.getPluginManager().getPlugin("floodgate") != null;
-        boolean hasGeyser = Bukkit.getPluginManager().getPlugin("Geyser-Spigot") != null;
-
-        if (!hasFloodgate && !hasGeyser) {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        if (pluginManager.getPlugin("floodgate") != null) {
+            handler = new FloodgateBedrockPlatformChecker();
+        } else if (pluginManager.getPlugin("Geyser-Spigot") != null) {
+            handler = new GeyserBedrockPlatformChecker();
+        } else {
             getLogger().warning("There is no Geyser or Floodgate plugin detected! Disabling...");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
 
-        if (hasFloodgate) {
-            this.platformChecker = new FloodgateBedrockPlatformChecker();
-        } else {
-            this.platformChecker = new GeyserBedrockPlatformChecker();
+        try {
+            config = ConfigLoader.loadConfig(getDataFolder().toPath());
+        } catch (IOException e) {
+            getLogger().severe("Failed to load config");
+            e.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
 
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
-    @Override
-    public void onDisable() {
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().hasPermission(Permissions.bypassPermission)) {
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        Player player = event.getPlayer();
+        if (player.hasPermission(Permissions.BYPASS)) {
             return;
         }
-        // Check if player is a bedrock player
-        if (platformChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
-            DeviceOs deviceOS = this.platformChecker.getBedrockPlatform(event.getPlayer().getUniqueId());
 
-            if (deviceOS == null) {
-                return;
-            }
+        BlockResult result = config.computeResult(player.getUniqueId(), handler);
 
-            if (!SupportedDeviceOSList.supportedDeviceOSList(config).contains(deviceOS)) {
-                event.getPlayer().kickPlayer(ChatColor.translateAlternateColorCodes('&', config.getNoAccessMessage()));
-            }
+        if (!result.isAllowed()) {
+            BlockResult.Denied deniedResult = (BlockResult.Denied) result;
+            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
+            event.setKickMessage(deniedResult.message());
+        } else {
+            result.warnings().forEach(player::sendMessage);
         }
     }
 }
