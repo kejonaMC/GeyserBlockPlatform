@@ -1,6 +1,5 @@
-package dev.kejona.geyserblockplatform.common.platformchecker;
+package dev.kejona.geyserblockplatform.common.bedrock;
 
-import dev.kejona.geyserblockplatform.common.Profile;
 import org.geysermc.api.Geyser;
 import org.geysermc.api.GeyserApiBase;
 import org.geysermc.api.connection.Connection;
@@ -11,7 +10,7 @@ import org.geysermc.floodgate.util.UiProfile;
 import java.util.Objects;
 import java.util.UUID;
 
-public class GeyserBedrockPlatformChecker implements BedrockPlatformChecker {
+public class BaseApiHandler implements BedrockHandler {
     private final GeyserApiBase api = Objects.requireNonNull(Geyser.api(), "geyser base-api");
 
     @Override

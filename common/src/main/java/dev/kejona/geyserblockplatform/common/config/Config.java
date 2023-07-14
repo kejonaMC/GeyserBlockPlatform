@@ -2,8 +2,8 @@ package dev.kejona.geyserblockplatform.common.config;
 
 
 import dev.kejona.geyserblockplatform.common.BlockResult;
-import dev.kejona.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
-import dev.kejona.geyserblockplatform.common.Profile;
+import dev.kejona.geyserblockplatform.common.bedrock.BedrockHandler;
+import dev.kejona.geyserblockplatform.common.bedrock.Profile;
 import org.geysermc.floodgate.util.DeviceOs;
 import org.geysermc.floodgate.util.InputMode;
 import org.geysermc.floodgate.util.UiProfile;
@@ -29,9 +29,9 @@ public class Config {
     private String inputMessage = "Invalid input mode:§4 %s";
     private String profileMessage = "Invalid UI profile:§4 %s";
 
-    public BlockResult computeResult(UUID player, BedrockPlatformChecker handler) {
+    public BlockResult computeResult(UUID player, BedrockHandler handler) {
         if (!handler.isBedrockPlayer(player)) {
-            return BlockResult.allowed();
+            return BlockResult.allowedResult();
         }
         Profile data = handler.profile(player);
 
@@ -73,7 +73,7 @@ public class Config {
         if (!warnings.isEmpty()) {
             return BlockResult.warn(warnings);
         }
-        return BlockResult.allowed();
+        return BlockResult.allowedResult();
     }
 
     @ConfigSerializable

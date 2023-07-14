@@ -4,9 +4,9 @@ import dev.kejona.geyserblockplatform.common.BlockResult;
 import dev.kejona.geyserblockplatform.common.Permissions;
 import dev.kejona.geyserblockplatform.common.config.Config;
 import dev.kejona.geyserblockplatform.common.config.ConfigLoader;
-import dev.kejona.geyserblockplatform.common.platformchecker.BedrockPlatformChecker;
-import dev.kejona.geyserblockplatform.common.platformchecker.FloodgateBedrockPlatformChecker;
-import dev.kejona.geyserblockplatform.common.platformchecker.GeyserBedrockPlatformChecker;
+import dev.kejona.geyserblockplatform.common.bedrock.BedrockHandler;
+import dev.kejona.geyserblockplatform.common.bedrock.FloodgateHandler;
+import dev.kejona.geyserblockplatform.common.bedrock.BaseApiHandler;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.ResultedEvent;
@@ -31,7 +31,7 @@ public class GeyserBlockPlatformVelocity {
     private final ProxyServer server;
     private final Path dataDirectory;
 
-    private BedrockPlatformChecker handler;
+    private BedrockHandler handler;
     private Config config;
 
     @Inject
@@ -44,9 +44,9 @@ public class GeyserBlockPlatformVelocity {
     public void onProxyInitialization(ProxyInitializeEvent event) throws IOException {
         PluginManager pluginManager = server.getPluginManager();
         if (pluginManager.isLoaded("floodgate")) {
-            handler = new FloodgateBedrockPlatformChecker();
+            handler = new FloodgateHandler();
         } else if (pluginManager.isLoaded("Geyser-Velocity")) {
-            handler = new GeyserBedrockPlatformChecker();
+            handler = new BaseApiHandler();
         } else {
             throw new IllegalStateException("There is no Geyser or Floodgate plugin detected!");
         }
@@ -66,7 +66,7 @@ public class GeyserBlockPlatformVelocity {
         }
 
         BlockResult result = config.computeResult(player.getUniqueId(), handler);
-        if (!result.isAllowed()) {
+        if (!result.allowed()) {
             BlockResult.Denied deniedResult = (BlockResult.Denied) result;
             event.setResult(ResultedEvent.ComponentResult.denied(LEGACY_SERIALIZER.deserialize(deniedResult.message())));
         } else {

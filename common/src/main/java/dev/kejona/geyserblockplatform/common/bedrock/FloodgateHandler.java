@@ -1,13 +1,12 @@
-package dev.kejona.geyserblockplatform.common.platformchecker;
+package dev.kejona.geyserblockplatform.common.bedrock;
 
-import dev.kejona.geyserblockplatform.common.Profile;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class FloodgateBedrockPlatformChecker implements BedrockPlatformChecker {
+public class FloodgateHandler implements BedrockHandler {
     private final FloodgateApi api = Objects.requireNonNull(FloodgateApi.getInstance(), "floodgate api");
 
     @Override

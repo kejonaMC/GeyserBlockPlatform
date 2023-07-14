@@ -14,13 +14,13 @@ public class BlockResult {
 
     private static final BlockResult ACCEPTED = new BlockResult(true, null);
 
-    private final boolean isAllowed;
+    private final boolean allowed;
 
     @NonNull
     private final List<String> warnings;
 
-    private BlockResult(boolean isAllowed, @Nullable List<String> warnings) {
-        this.isAllowed = isAllowed;
+    private BlockResult(boolean allowed, @Nullable List<String> warnings) {
+        this.allowed = allowed;
 
         if (warnings == null) {
             this.warnings = Collections.emptyList();
@@ -29,7 +29,7 @@ public class BlockResult {
         }
     }
 
-    public static BlockResult allowed() {
+    public static BlockResult allowedResult() {
         return ACCEPTED;
     }
 
