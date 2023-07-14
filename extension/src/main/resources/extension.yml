@@ -1,0 +1,7 @@
+id: geyserblockplatform
+name: GeyserBlockPlatform
+version: "${version}"
+authors: [onebeastchris, Konicai]
+
+main: dev.kejona.geyserblockplatform.extension.GeyserBlockPlatformExtension
+api: 1.0.0
