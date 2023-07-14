@@ -7,7 +7,7 @@ plugins {
 
 allprojects {
     group = "dev.kejona.geyserblockplatform"
-    version = "1.1-SNAPSHOT"
+    version = "2.0-SNAPSHOT"
     description = "Prevent specific Bedrock platforms from joining your server"
 
     tasks {

@@ -23,7 +23,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Plugin(id = "geyserblockplatform", name = "GeyserBlockPlatformVelocity", version = "1.2-SNAPSHOT")
+@Plugin(id = "geyserblockplatform", name = "GeyserBlockPlatformVelocity", version = "2.0-SNAPSHOT")
 public class GeyserBlockPlatformVelocity {
 
     private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.legacySection();
