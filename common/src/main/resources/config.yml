@@ -1,22 +1,39 @@
-# Disable or enable platforms.
-unknown-platform-enabled: true
-android-enabled: true
-ios-enabled: true
-macos-enabled: true
-gearvr-enabled: true
-windows10-enabled: true
-windowsedu-enabled: true
-ps4-enabled: true
-switch-enabled: true
-xboxone-enabled: true
-windowsphone-enabled: true
 
-# Disconnect message to players.
-no-access-message: "&6Sorry your platform does not have access to this server!"
+# Kick message when the bedrock platform is not allowed
+platform-message: "Invalid bedrock platform:§4 %s"
+# Kick message when the input mode is not allowed
+input-message: "Invalid input mode:§4 %s"
+# Kick message when the UI profile is not allowed
+profile-message: "Invalid UI profile:§4 %s"
 
-# Proxy options to exclude specified server.
-# The "all" option will deny access to the whole network.
-deny-server-access:
-#  - "all"
-  - "serverhere"
+# See https://github.com/GeyserMC/api/blob/master/base/src/main/java/org/geysermc/api/util/BedrockPlatform.java#L31-L45
+# for more descriptive names
+platforms:
+  UNKNOWN: true
+  GOOGLE: true
+  IOS: true
+  OSX: true
+  AMAZON: true
+  GEARVR: true
+  HOLOLENS: true
+  UWP: true
+  WIN32: true
+  DEDICATED: true
+  TVOS: true
+  PS4: true
+  NX: true
+  XBOX: true
+  WINDOWS_PHONE: true
 
+# Input mode
+inputs:
+  UNKNOWN: true
+  KEYBOARD_MOUSE: true
+  TOUCH: true
+  CONTROLLER: true
+  VR: true
+
+# UI profile
+profiles:
+  CLASSIC: true
+  POCKET: true

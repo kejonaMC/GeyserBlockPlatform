@@ -16,8 +16,6 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
-
 public final class GeyserBlockPlatformSpigot extends JavaPlugin implements Listener {
     private BedrockHandler handler;
     private Config config;
@@ -37,7 +35,7 @@ public final class GeyserBlockPlatformSpigot extends JavaPlugin implements Liste
 
         try {
             config = ConfigLoader.loadConfig(getDataFolder().toPath());
-        } catch (IOException e) {
+        } catch (Exception e) {
             getLogger().severe("Failed to load config");
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);

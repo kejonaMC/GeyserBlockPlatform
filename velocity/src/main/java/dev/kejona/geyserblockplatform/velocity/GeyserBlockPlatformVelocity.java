@@ -20,7 +20,6 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 @Plugin(id = "geyserblockplatform", name = "GeyserBlockPlatformVelocity", version = "2.0-SNAPSHOT")
@@ -41,7 +40,7 @@ public class GeyserBlockPlatformVelocity {
     }
 
     @Subscribe
-    public void onProxyInitialization(ProxyInitializeEvent event) throws IOException {
+    public void onProxyInitialization(ProxyInitializeEvent event) throws Exception {
         PluginManager pluginManager = server.getPluginManager();
         if (pluginManager.isLoaded("floodgate")) {
             handler = new FloodgateHandler();

@@ -17,8 +17,6 @@ import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
-import java.io.IOException;
-
 public final class GeyserBlockPlatformBungee extends Plugin implements Listener {
     private BedrockHandler handler;
     private Config config;
@@ -37,7 +35,7 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
 
         try {
             config = ConfigLoader.loadConfig(getDataFolder().toPath());
-        } catch (IOException e) {
+        } catch (Exception e) {
             getLogger().severe("Failed to load config");
             e.printStackTrace();
             return;
