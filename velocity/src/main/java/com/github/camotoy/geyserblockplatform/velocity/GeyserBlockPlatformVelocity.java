@@ -17,9 +17,11 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.geysermc.floodgate.util.DeviceOs;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
 @Plugin(
@@ -62,21 +64,22 @@ public class GeyserBlockPlatformVelocity {
     }
 
     @Subscribe(order = PostOrder.FIRST)
-    public void onPlayerChangeServer(ServerConnectedEvent event) {
+    public void onPlayerChangeServer(@NotNull ServerConnectedEvent event) {
         if (event.getPlayer().hasPermission(Permissions.bypassPermission)) {
             return;
         }
-        // Check if player is a bedrock player
+
         if (platformChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
-            String servername = event.getServer().getServerInfo().getName();
-            // First check if the "deny-server-access:" list contains the server name.
-            if (config.getNoServerAccess().contains(servername)
-                    // Then check if the list contains "all" in case they want full network deny
-                    || config.getNoServerAccess().contains("all")) {
-                // Check if the client platform isn't blocked
+            String serverName = event.getServer().getServerInfo().getName();
+            List<String> noAccessServers = config.getNoServerAccess();
+
+            if (noAccessServers.contains(serverName) || noAccessServers.contains("all")) {
                 if (!connectionAllowed(event.getPlayer().getUniqueId())) {
-                    // Disconnect player
-                    event.getPlayer().disconnect(color(config.getNoAccessMessage()));
+                    if (event.getPreviousServer().isPresent()) {
+                        event.getPlayer().createConnectionRequest(event.getPreviousServer().get());
+                    } else {
+                        event.getPlayer().disconnect(color(config.getNoAccessMessage()));
+                    }
                 }
             }
         }

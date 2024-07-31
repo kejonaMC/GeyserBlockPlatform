@@ -9,12 +9,16 @@ import com.github.camotoy.geyserblockplatform.common.platformchecker.GeyserBedro
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.event.ServerConnectedEvent;
+import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.Server;
+import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventHandler;
 import org.geysermc.floodgate.util.DeviceOs;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.UUID;
 
 public final class GeyserBlockPlatformBungee extends Plugin implements Listener {
@@ -41,24 +45,27 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
 
         ProxyServer.getInstance().getPluginManager().registerListener(this, this);
     }
-
     @EventHandler
-    public void onPlayerServerConnect(ServerConnectedEvent event) {
+    public void onPlayerChangeServer(@NotNull ServerSwitchEvent event) {
         if (event.getPlayer().hasPermission(Permissions.bypassPermission)) {
             return;
         }
 
-        // Check if player is a bedrock player
         if (platformChecker.isBedrockPlayer(event.getPlayer().getUniqueId())) {
-            String servername = event.getServer().getInfo().getName();
-            // First check if the "deny-server-access:" list contains the server name.
-            if (config.getNoServerAccess().contains(servername)
-                    // Then check if the list contains "all" in case they want full network deny
-                    || config.getNoServerAccess().contains("all")) {
-                // Check if the client platform isn't blocked
-                if (!connectionAllowed(event.getPlayer().getUniqueId())) {
-                    // Disconnect player
-                    event.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', config.getNoAccessMessage())));
+            Server server = event.getPlayer().getServer();
+            if (server != null) {
+                String serverName = server.getInfo().getName();
+                List<String> noAccessServers = config.getNoServerAccess();
+
+                if (noAccessServers.contains(serverName) || noAccessServers.contains("all")) {
+                    if (!connectionAllowed(event.getPlayer().getUniqueId())) {
+                        ServerInfo previousServer = event.getFrom();
+                        if (previousServer != null) {
+                            event.getPlayer().connect(previousServer);
+                        } else {
+                            event.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', config.getNoAccessMessage())));
+                        }
+                    }
                 }
             }
         }
