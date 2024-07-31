@@ -77,6 +77,7 @@ public class GeyserBlockPlatformVelocity {
                 if (!connectionAllowed(event.getPlayer().getUniqueId())) {
                     if (event.getPreviousServer().isPresent()) {
                         event.getPlayer().createConnectionRequest(event.getPreviousServer().get());
+                        event.getPlayer().sendMessage(color(config.getNoAccessMessage()));
                     } else {
                         event.getPlayer().disconnect(color(config.getNoAccessMessage()));
                     }

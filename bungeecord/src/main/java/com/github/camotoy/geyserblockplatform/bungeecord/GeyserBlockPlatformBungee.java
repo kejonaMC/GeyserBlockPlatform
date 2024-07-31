@@ -62,6 +62,7 @@ public final class GeyserBlockPlatformBungee extends Plugin implements Listener 
                         ServerInfo previousServer = event.getFrom();
                         if (previousServer != null) {
                             event.getPlayer().connect(previousServer);
+                            event.getPlayer().sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', config.getNoAccessMessage())));
                         } else {
                             event.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', config.getNoAccessMessage())));
                         }
