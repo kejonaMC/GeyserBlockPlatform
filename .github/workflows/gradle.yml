@@ -1,10 +1,15 @@
+name: Build and Release plugin
 
-name: build
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -22,11 +27,24 @@ jobs:
           arguments: clean build
           gradle-home-cache-cleanup: true
           
-      - uses: actions/upload-artifact@v3
-        if: success()
+      - name: Upload artifacts (CI only)
+        if: github.ref_type != 'tag' 
+        uses: actions/upload-artifact@v4
         with:
           name: GeyserBlockPlatform
           path: |
             spigot/build/libs/GeyserBlockPlatform-Spigot.jar
             bungeecord/build/libs/GeyserBlockPlatform-Bungeecord.jar
             velocity/build/libs/GeyserBlockPlatform-Velocity.jar
+
+      - name: Release .jar files (on tag)
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            spigot/build/libs/GeyserBlockPlatform-Spigot.jar
+            bungeecord/build/libs/GeyserBlockPlatform-Bungeecord.jar
+            velocity/build/libs/GeyserBlockPlatform-Velocity.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
